@@ -8,16 +8,12 @@ const refs = {
 };
 
 let colorId = null;
-let isActive = false;
 
 refs.startBtn.addEventListener('click', changeColorHandler);
 refs.stopBtn.addEventListener('click', stopChangingHandler);
 
 function changeColorHandler() {
-  if (isActive) {
-    return;
-  }
-  isActive = true;
+  activeButtonHandler(refs.stopBtn, refs.startBtn);
 
   colorId = setInterval(() => {
     return runRandomColor();
@@ -25,14 +21,18 @@ function changeColorHandler() {
 }
 
 function stopChangingHandler() {
+  activeButtonHandler(refs.startBtn, refs.stopBtn);
   clearInterval(colorId);
-  colorId = null;
-  isActive = false;
 }
 
 function runRandomColor() {
   const currentColor = randomIntegerFromInterval(0, colors.length - 1);
   refs.body.style.backgroundColor = colors[currentColor];
+}
+
+function activeButtonHandler(enabled, disabled) {
+  disabled.setAttribute('disabled', 'disabled');
+  enabled.removeAttribute('disabled');
 }
 
 const randomIntegerFromInterval = (min, max) => {
